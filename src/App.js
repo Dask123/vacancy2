@@ -4,7 +4,13 @@ import { connect } from 'react-redux';
 
 export class App extends Component {
 
-  getQuery = url => {
+  constructor(props) {
+    super(props);
+    this.state = {value: 0};
+  }
+
+
+  getQuery = (url, requestBody) => {
     return new Promise((succeed, fail)=>{
       const request = new XMLHttpRequest();
       request.open('GET', url);
@@ -14,7 +20,7 @@ export class App extends Component {
       request.addEventListener('error', ()=>{
         fail(new Error('Error'));
       });
-      request.send();
+      request.send(requestBody);
     });
   };
 
@@ -33,10 +39,16 @@ export class App extends Component {
     });
   }
 
-  onSelectCity(id){
-   console.log(id)
-
-  }
+  onSelectCity = (e) => {
+    let id = e.target.value;
+    console.log(id);
+    let params = `area=${id}`;
+    this.getQuery(`https://api.hh.ru/vacancies/`, params).then(text => {
+      console.log(JSON.parse(text));
+    }, error => {
+      console.log('error');
+    });
+  };
   // renderData = () =>{
   //   const { items } = this.props.appStore.data;
   //   return(
@@ -46,7 +58,7 @@ export class App extends Component {
 
 
   render(){
-    if (this.props.list&&!this.props.list.length) return <ul>нет данных</ul>
+    if (this.props.list&&!this.props.list.length) return <ul>нет данных</ul>;
 
     let list = this.props.list.map(item =>
       <div className="vacWrap">
@@ -66,12 +78,11 @@ export class App extends Component {
         <span className="vacRegion">, {item.area.name}</span>
       </div>);
 
-    console.log(this.props.cities);
-    let cities = this.props.cities.map(city=>city.areas.map(area=><option key={area.id}>{area.name}</option>));
+    let cities = this.props.cities.map(city=>city.areas.map(area=><option key={area.id} value={area.id}>{area.name}</option>));
     return(
     <div>
       <div className="filter">
-        <select onChange={(e)=>this.onSelectCity(e)}>
+        <select onChange={this.onSelectCity}>
           {cities}
         </select>
       </div>
