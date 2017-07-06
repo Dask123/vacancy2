@@ -1,14 +1,10 @@
 {
-  "name": "react-hot-boilerplate",
+  "name": "vacancy",
   "version": "1.0.0",
-  "description": "Boilerplate for ReactJS project with hot code reloading",
+  "description": "test task",
   "scripts": {
     "start": "node server.js",
     "lint": "eslint src"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/gaearon/react-hot-boilerplate.git"
   },
   "keywords": [
     "react",
@@ -21,12 +17,8 @@
     "edit",
     "webpack"
   ],
-  "author": "Dan Abramov <dan.abramov@me.com> (http://github.com/gaearon)",
+  "author": "No Name",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/gaearon/react-hot-boilerplate/issues"
-  },
-  "homepage": "https://github.com/gaearon/react-hot-boilerplate",
   "devDependencies": {
     "babel-core": "^6.0.20",
     "babel-eslint": "^4.1.3",
@@ -37,12 +29,18 @@
     "eslint": "^1.10.3",
     "eslint-plugin-react": "^3.6.2",
     "express": "^4.13.4",
-    "react-hot-loader": "^1.3.0",
-    "webpack": "^1.12.2",
-    "webpack-dev-middleware": "^1.6.1",
-    "webpack-hot-middleware": "^2.10.0"
+    "react-hot-loader": "^1.3.1",
+    "react-redux": "^5.0.5",
+    "redux": "^3.7.1",
+    "redux-devtools-extension": "^2.13.2",
+    "redux-thunk": "^2.2.0",
+    "webpack": "^1.15.0",
+    "webpack-dev-middleware": "^1.11.0",
+    "webpack-hot-middleware": "^2.18.2"
   },
   "dependencies": {
+    "css-modules-require-hook": "^4.0.6",
+    "moment": "^2.18.1",
     "react": "^0.14.6",
     "react-dom": "^0.14.6"
   }

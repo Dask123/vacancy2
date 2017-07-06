@@ -1,0 +1,12 @@
+.wrap{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.vacWrap{
+  max-width: 480px;
+}
+body {
+  background: red;
+}
