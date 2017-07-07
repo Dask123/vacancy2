@@ -6,7 +6,6 @@ export class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {value: 0};
   }
 
 
@@ -27,12 +26,10 @@ export class App extends Component {
   componentDidMount(){
     this.getQuery('https://api.hh.ru/vacancies/').then(text=>{
       this.props.onGetData(JSON.parse(text));
-      console.log(this.props);
     }, error=>{
       console.log('error');
     });
     this.getQuery('https://api.hh.ru/areas/113').then(text=>{
-      console.log(JSON.parse(text));
       this.props.onGetCities(JSON.parse(text));
     }, error=>{
       console.log('error');
@@ -41,42 +38,62 @@ export class App extends Component {
 
   onSelectCity = (e) => {
     let id = e.target.value;
-    console.log(id);
     let params = `area=${id}`;
-    this.getQuery(`https://api.hh.ru/vacancies/`, params).then(text => {
-      console.log(JSON.parse(text));
+    this.getQuery(`https://api.hh.ru/vacancies?${params}`).then(text => {
+      this.props.onGetFilterCities(JSON.parse(text));
     }, error => {
       console.log('error');
     });
   };
-  // renderData = () =>{
-  //   const { items } = this.props.appStore.data;
-  //   return(
-  //     <div>{items.forEach((index, item)=><p key="index">{item}</p>}</div>
-  //   )
-  // };
 
+  onFilterSalaryFrom = (e) => {
+    let salaryFrom = e.target.value;
+    console.log(salaryFrom);
+    if(this.props.list.length){
+      this.props.onGetUserFilterFrom(salaryFrom);
+    }
+  };
+
+  onFilterSalaryTo = (e) =>{
+    let salaryTo = e.target.value;
+    console.log(salaryTo);
+    if(this.props.list.length){
+      this.props.onGetUserFilterTo(salaryTo);
+    }
+  };
 
   render(){
-    if (this.props.list&&!this.props.list.length) return <ul>нет данных</ul>;
+    let list=this.props.list;
+    if (list&&!list.length) return <ul>нет данных</ul>;
 
-    let list = this.props.list.map(item =>
-      <div className="vacWrap">
-        <p className="title">{item.name}</p>
-        <label>Требования: </label>
-        <span className="vacRequirment">{item.snippet.requirement}</span><br/>
-        <label>Обязанности: </label>
-        <span className="vacResponsibility">
+    list = list.filter(item=>
+      (item.salary!==null&&
+        item.salary.from!==null&&
+          item.salary.from>=this.props.userFilter.salary_from));
+    if(this.props.userFilter.salary_to){
+      list = list.filter(item=>
+        item.salary.from<=this.props.userFilter.salary_to
+      )
+    };
+
+      list = list.map(item =>
+        <div className="vacWrap">
+          <p className="title">{item.name}</p>
+          <label>Требования: </label>
+          <span className="vacRequirment">{item.snippet.requirement}</span><br/>
+          <label>Обязанности: </label>
+          <span className="vacResponsibility">
           <span dangerouslySetInnerHTML={(() => {return {__html: item.snippet.responsibility===null?'Не указано':item.snippet.responsibility}})()}/>
         </span><br/>
-        <label>Заработная плата: </label>
-        <span className="vacSalary">
+          <label>Заработная плата: </label>
+          <span className="vacSalary">
           {item.salary===null?"Договорная":item.salary.from===null?"Договорная":`от ${item.salary.from} рублей`}
         </span><br/>
-        <label>Компания: </label>
-        <span className="vacCompany">{item.employer.name}</span>
-        <span className="vacRegion">, {item.area.name}</span>
-      </div>);
+          <label>Компания: </label>
+          <span className="vacCompany">{item.employer.name}</span>
+          <span className="vacRegion">, {item.area.name}</span>
+        </div>);
+
 
     let cities = this.props.cities.map(city=>city.areas.map(area=><option key={area.id} value={area.id}>{area.name}</option>));
     return(
@@ -85,6 +102,10 @@ export class App extends Component {
         <select onChange={this.onSelectCity}>
           {cities}
         </select>
+      </div>
+      <div className="userFilter">
+        <label>Зарплата от</label><input onChange={this.onFilterSalaryFrom} type="text"/>
+        <label>Зарплата до</label><input onChange={this.onFilterSalaryTo} type="text"/>
       </div>
       <div className="wrap">{list}</div>
     </div>
@@ -105,7 +126,8 @@ export class App extends Component {
 export default connect (
   store => ({
     list: store.items,
-    cities: store.cities
+    cities: store.cities,
+    userFilter: store.userFilter
   }),
   dispatch => ({
     onGetData: (data) => {
@@ -118,6 +140,24 @@ export default connect (
       dispatch({
         type: 'FETCH_CITIES_SUCCESS',
         payload: data.areas
+      })
+    },
+    onGetFilterCities: (data)=>{
+      dispatch({
+        type: 'FETCH_FILTER_CITIES',
+        payload: data
+      })
+    },
+    onGetUserFilterFrom: (salary_from)=>{
+      dispatch({
+        type: 'FETCH_FILTER_FROM',
+        salary_From: salary_from,
+      })
+    },
+    onGetUserFilterTo: (salary_to)=>{
+      dispatch({
+        type: 'FETCH_FILTER_TO',
+        salary_To: salary_to
       })
     }
   })

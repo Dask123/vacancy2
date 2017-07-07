@@ -8,7 +8,11 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 const initialState = {
   items:[],
-  cities:[]
+  cities:[],
+  userFilter: {
+    salary_from: null,
+    salary_to: null
+  }
 };
 
 const dataReducer = (state=initialState, action) => {
@@ -20,6 +24,22 @@ const dataReducer = (state=initialState, action) => {
     case "FETCH_CITIES_SUCCESS":
       return{
         ...state, cities: action.payload
+      };
+    case "FETCH_FILTER_CITIES":
+      return{
+        ...state, items: action.payload.items
+      };
+    case 'FETCH_FILTER_FROM':
+      let _userFilter ={...state.userFilter};
+      _userFilter.salary_from=action.salary_From;
+      return{
+        ...state,userFilter: _userFilter
+      };
+    case 'FETCH_FILTER_TO':
+      _userFilter ={...state.userFilter};
+      _userFilter.salary_to=action.salary_To;
+      return{
+        ...state,userFilter: _userFilter
       };
     default:
       return state
