@@ -1,0 +1,77 @@
+.wrap{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font: normal 14px sans-serif;
+}
+
+body{
+  background: rgb(247,247,247);
+}
+
+.filterWrap{
+  max-width: 500px;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #EDEDED;
+  background: #FFFFFF;
+  box-shadow: 0 0 10px #E1E1E2;
+  border-radius: 7px;
+}
+.vacWrap{
+  max-width: 500px;
+  border: 1px solid #EDEDED;
+  border-radius: 7px;
+  margin: 10px;
+  padding: 10px;
+  background: #FFFFFF;
+  box-shadow: 0 0 10px #E1E1E2;
+  /*text-align: justify;*/
+}
+
+select{
+  width: 100%;
+  border-radius: 3px;
+  height: 30px;
+  border: 1px solid rgb(217, 217, 217);
+}
+
+option{
+  max-width: 250px;
+  border-radius: 3px;
+  height: 30px;
+  text-align: center;
+  border: 1px solid rgb(217, 217, 217);
+}
+
+
+input{
+  max-width: 102px;
+  border-radius: 3px;
+  height: 22px;
+  border: 1px solid rgb(217, 217, 217);
+}
+
+.filter{
+  margin: 5px;
+  padding: 5px;
+  justify-content: space-between;
+}
+
+.userFilter{
+  display: flex;
+  flex-direction: row;
+  margin: 5px;
+  padding: 5px;
+  justify-content: space-between;
+}
+.title{
+  text-align: center;
+}
+label{
+  font: bold italic 110% sans-serif;
+}
+p{
+  font: bold italic 110% sans-serif;
+}
