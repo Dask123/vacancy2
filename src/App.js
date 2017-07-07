@@ -79,6 +79,8 @@ export class App extends Component {
       list = list.map(item =>
         <div className="vacWrap">
           <p className="title">{item.name}</p>
+          <hr>
+          </hr>
           <label>Требования: </label>
           <span className="vacRequirment">{item.snippet.requirement}</span><br/>
           <label>Обязанности: </label>
@@ -97,17 +99,21 @@ export class App extends Component {
 
     let cities = this.props.cities.map(city=>city.areas.map(area=><option key={area.id} value={area.id}>{area.name}</option>));
     return(
-    <div>
-      <div className="filter">
-        <select onChange={this.onSelectCity}>
-          {cities}
-        </select>
+    <div className="wrap">
+      <div className="filterWrap">
+        <div className="filter">
+          <label>Города: </label>
+          <select onChange={this.onSelectCity}>
+            {cities}
+          </select>
+        </div>
+        <div className="userFilter">
+          <label>Зарплата от: </label><input className="salaryFrom" onChange={this.onFilterSalaryFrom} type="text"/>
+          <label>Зарплата до: </label><input className="salaryTo" onChange={this.onFilterSalaryTo} type="text"/>
+        </div>
       </div>
-      <div className="userFilter">
-        <label>Зарплата от</label><input onChange={this.onFilterSalaryFrom} type="text"/>
-        <label>Зарплата до</label><input onChange={this.onFilterSalaryTo} type="text"/>
-      </div>
-      <div className="wrap">{list}</div>
+
+      <div>{list}</div>
     </div>
     )
 
